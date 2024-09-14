@@ -1,0 +1,4 @@
+.store-list .store-list-item.active {
+  font-size: 14px;
+  font-weight: bold;
+}

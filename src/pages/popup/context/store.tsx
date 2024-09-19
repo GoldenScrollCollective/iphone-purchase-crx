@@ -1,11 +1,16 @@
 import React from 'react';
 import { useStopwatch } from 'react-timer-hook';
 
-import { storeZipList } from '../constants';
+import { colors, memories, storeZipList } from '../constants';
+import { Color, Memory } from '@pages/popup/core';
 
 interface DefaultValue {
   isLoading: boolean;
   storeIndex: number;
+  color: Color;
+  setColor: React.Dispatch<React.SetStateAction<Color>>;
+  memory: Memory;
+  setMemory: React.Dispatch<React.SetStateAction<Memory>>;
 }
 
 interface Props {
@@ -14,7 +19,11 @@ interface Props {
 
 const StoreContext = React.createContext<DefaultValue>({
   isLoading: false,
-  storeIndex: 0
+  storeIndex: 0,
+  color: colors[0],
+  setColor: () => true,
+  memory: memories[0],
+  setMemory: () => true
 });
 
 export const StoreProvider: React.FC<Props> = ({ children }) => {
@@ -22,6 +31,8 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
 
   const [isLoading, setLoading] = React.useState(false);
   const [storeIndex, setStoreIndex] = React.useState(0);
+  const [color, setColor] = React.useState<Color>(colors[0]);
+  const [memory, setMemory] = React.useState<Memory>(memories[0]);
 
   React.useEffect(() => {
     handleTotalSeconds();
@@ -36,9 +47,13 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
   const memoedValue = React.useMemo(
     () => ({
       isLoading,
-      storeIndex
+      storeIndex,
+      color,
+      setColor,
+      memory,
+      setMemory
     }),
-    [isLoading, storeIndex]
+    [isLoading, storeIndex, color, memory]
   );
 
   return (
